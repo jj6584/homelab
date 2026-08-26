@@ -6,3 +6,4 @@ resources:
   - infrastructure.yaml
   - metallb.yaml
   - traefik.yaml
+  - nfs.yaml
