@@ -5,3 +5,5 @@ resources:
   - namespace.yaml
   - ip-pool.yaml
   - l2-advertisement.yaml
+  - repository.yaml
+  - release.yaml

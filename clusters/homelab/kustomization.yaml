@@ -4,3 +4,4 @@ resources:
   - flux-system
   - secrets.yaml
   - infrastructure.yaml
+  - metallb.yaml
