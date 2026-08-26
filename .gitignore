@@ -1,0 +1,16 @@
+# Talos-generated credentials and machine configuration
+/talos/secrets.yaml
+/talos/generated/
+
+# Kubernetes credentials
+/kubeconfig
+/kubeconfig-*
+
+# Local overrides
+/.env
+
+# Editor and OS files
+.DS_Store
+.idea/
+.vscode/
+*.swp

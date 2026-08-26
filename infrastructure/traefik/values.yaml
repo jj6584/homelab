@@ -1,0 +1,32 @@
+deployment:
+  replicas: 2
+
+service:
+  spec:
+    type: LoadBalancer
+    loadBalancerIP: 172.16.20.50
+
+ports:
+  web:
+    port: 8000
+    exposedPort: 80
+  websecure:
+    port: 8443
+    exposedPort: 443
+
+providers:
+  kubernetesIngress:
+    enabled: true
+  kubernetesCRD:
+    enabled: true
+
+ingressClass:
+  enabled: true
+  isDefaultClass: true
+
+ingressRoute:
+  dashboard:
+    enabled: false
+
+log:
+  level: INFO
