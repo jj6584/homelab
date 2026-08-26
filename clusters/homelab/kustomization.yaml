@@ -5,3 +5,4 @@ resources:
   - secrets.yaml
   - infrastructure.yaml
   - metallb.yaml
+  - traefik.yaml
