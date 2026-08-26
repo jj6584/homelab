@@ -1,0 +1,58 @@
+name: Flux Validate
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Flux manifests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flux CLI
+        uses: fluxcd/flux2/action@main
+
+      - name: Show Flux version
+        run: flux version --client
+
+      - name: Validate cert-manager
+        run: |
+          flux build kustomization infrastructure \
+            --path ./infrastructure/cert-manager \
+            --kustomization-file ./clusters/homelab/infrastructure.yaml \
+            --dry-run > /dev/null
+
+      - name: Validate MetalLB
+        run: |
+          flux build kustomization metallb \
+            --path ./infrastructure/metallb \
+            --kustomization-file ./clusters/homelab/metallb.yaml \
+            --dry-run > /dev/null
+
+      - name: Validate Traefik
+        run: |
+          flux build kustomization traefik \
+            --path ./infrastructure/traefik \
+            --kustomization-file ./clusters/homelab/traefik.yaml \
+            --dry-run > /dev/null
+
+      - name: Validate NFS
+        run: |
+          flux build kustomization nfs \
+            --path ./infrastructure/storage/nfs \
+            --kustomization-file ./clusters/homelab/nfs.yaml \
+            --dry-run > /dev/null
