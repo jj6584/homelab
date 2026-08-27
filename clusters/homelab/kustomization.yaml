@@ -7,3 +7,4 @@ resources:
   - metallb.yaml
   - traefik.yaml
   - nfs.yaml
+  - apps.yaml
