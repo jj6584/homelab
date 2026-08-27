@@ -1,0 +1,15 @@
+services:
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:2026.8.1
+    container_name: homeassistant
+
+    restart: unless-stopped
+
+    network_mode: host
+
+    environment:
+      TZ: Asia/Manila
+
+    volumes:
+      - /srv/docker-data/homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
