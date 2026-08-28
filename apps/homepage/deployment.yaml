@@ -1,0 +1,134 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homepage
+  namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage
+
+spec:
+  replicas: 1
+
+  revisionHistoryLimit: 3
+
+  strategy:
+    type: RollingUpdate
+
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: homepage
+
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: homepage
+
+    spec:
+      automountServiceAccountToken: false
+
+      containers:
+        - name: homepage
+
+          image: ghcr.io/gethomepage/homepage:v2.0.0
+          imagePullPolicy: IfNotPresent
+
+          securityContext:
+            allowPrivilegeEscalation: false
+
+            capabilities:
+              drop:
+                - ALL
+
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+
+            seccompProfile:
+              type: RuntimeDefault
+
+          env:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+
+            - name: HOMEPAGE_ALLOWED_HOSTS
+              value: "$(MY_POD_IP):3000,home.apps.bubudog.net"
+
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+
+            limits:
+              cpu: 500m
+              memory: 512Mi
+
+          readinessProbe:
+            httpGet:
+              path: /api/healthcheck
+              port: http
+
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 6
+
+          livenessProbe:
+            httpGet:
+              path: /api/healthcheck
+              port: http
+
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+          volumeMounts:
+            - name: homepage-config
+              mountPath: /app/config/settings.yaml
+              subPath: settings.yaml
+
+            - name: homepage-config
+              mountPath: /app/config/services.yaml
+              subPath: services.yaml
+
+            - name: homepage-config
+              mountPath: /app/config/bookmarks.yaml
+              subPath: bookmarks.yaml
+
+            - name: homepage-config
+              mountPath: /app/config/widgets.yaml
+              subPath: widgets.yaml
+
+            - name: homepage-config
+              mountPath: /app/config/kubernetes.yaml
+              subPath: kubernetes.yaml
+
+            - name: homepage-config
+              mountPath: /app/config/docker.yaml
+              subPath: docker.yaml
+
+            - name: homepage-config
+              mountPath: /app/config/custom.css
+              subPath: custom.css
+
+            - name: homepage-config
+              mountPath: /app/config/custom.js
+              subPath: custom.js
+
+            - name: homepage-logs
+              mountPath: /app/config/logs
+
+      volumes:
+        - name: homepage-config
+          configMap:
+            name: homepage-config
+
+        - name: homepage-logs
+          emptyDir: {}
