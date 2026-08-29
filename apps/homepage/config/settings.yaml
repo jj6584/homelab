@@ -1,0 +1,19 @@
+title: Homelab
+
+theme: dark
+color: slate
+
+headerStyle: clean
+
+target: _blank
+
+disableIndexing: true
+
+layout:
+  Applications:
+    style: row
+    columns: 3
+
+  Development:
+    style: row
+    columns: 3
