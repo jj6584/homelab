@@ -51,3 +51,9 @@
         icon: nginx-proxy-manager
         href: https://proxy.bubudog.net
         description: Reverse proxy management
+
+- Observability:
+    - Grafana:
+        icon: grafana
+        href: https://grafana.apps.bubudog.net
+        description: Metrics and observability dashboards

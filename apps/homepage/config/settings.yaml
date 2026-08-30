@@ -32,6 +32,11 @@ layout:
     columns: 3
     icon: mdi-apps
 
+  Observability:
+    style: row
+    columns: 3
+    icon: mdi-chart-line
+    
   Media:
     style: row
     columns: 3
