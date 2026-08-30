@@ -1,4 +1,5 @@
 title: Homelab
+description: Bubudog homelab control plane
 
 theme: dark
 color: slate
@@ -8,12 +9,30 @@ headerStyle: clean
 target: _blank
 
 disableIndexing: true
+hideVersion: true
+useEqualHeights: true
+
+quicklaunch:
+  searchDescriptions: true
+  mobileButtonPosition: bottom-right
 
 layout:
+  PVE:
+    style: row
+    columns: 3
+    icon: proxmox
+
+  Network:
+    style: row
+    columns: 3
+    icon: mdi-lan
+
   Applications:
     style: row
     columns: 3
+    icon: mdi-apps
 
   Development:
     style: row
     columns: 3
+    icon: mdi-source-repository

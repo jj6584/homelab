@@ -1,0 +1,491 @@
+:root {
+  --control-bg: #050914;
+  --control-surface: rgba(12, 20, 36, 0.72);
+  --control-surface-strong: rgba(17, 28, 48, 0.9);
+  --control-border: rgba(148, 163, 184, 0.16);
+  --control-border-active: rgba(45, 212, 191, 0.42);
+  --control-text: #e6f1ff;
+  --control-muted: #8495ad;
+  --control-cyan: #22d3ee;
+  --control-teal: #2dd4bf;
+  --control-blue: #60a5fa;
+  --control-radius: 16px;
+}
+
+html.dark body {
+  background: var(--control-bg);
+  color: var(--control-text);
+}
+
+html.dark body::before,
+html.dark body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+html.dark body::before {
+  z-index: 0;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(34, 211, 238, 0.13), transparent 28rem),
+    radial-gradient(circle at 86% 18%, rgba(96, 165, 250, 0.11), transparent 30rem),
+    radial-gradient(circle at 58% 90%, rgba(45, 212, 191, 0.08), transparent 34rem),
+    linear-gradient(145deg, #050914 0%, #08101e 46%, #050914 100%);
+}
+
+html.dark body::after {
+  z-index: 0;
+  opacity: 0.17;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, black, transparent 82%);
+}
+
+#page_wrapper {
+  isolation: isolate;
+}
+
+#inner_wrapper {
+  position: relative;
+  background: transparent;
+  scrollbar-color: rgba(45, 212, 191, 0.4) transparent;
+}
+
+#inner_wrapper > .container {
+  max-width: 1440px;
+  padding: 0.5rem 1rem 0;
+}
+
+/* custom.js mounts this masthead before Homepage's information widgets. */
+#homelab-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 2rem;
+  margin: 2.4rem 2.25rem 0.5rem;
+  padding: 1.75rem 1.85rem;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--control-border);
+  border-radius: 22px;
+  background:
+    linear-gradient(120deg, rgba(17, 29, 50, 0.94), rgba(8, 16, 30, 0.7)),
+    var(--control-surface);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+}
+
+#homelab-hero::before {
+  content: "";
+  position: absolute;
+  width: 19rem;
+  height: 19rem;
+  top: -13rem;
+  right: 8rem;
+  border-radius: 50%;
+  background: var(--control-cyan);
+  filter: blur(70px);
+  opacity: 0.13;
+}
+
+#homelab-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--control-cyan), var(--control-teal));
+  box-shadow: 0 0 24px rgba(45, 212, 191, 0.55);
+}
+
+.homelab-hero-copy,
+.homelab-hero-time {
+  position: relative;
+  z-index: 1;
+}
+
+.homelab-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 0.65rem;
+  color: var(--control-teal);
+  font-size: 0.69rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.homelab-status-dot {
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 50%;
+  background: var(--control-teal);
+  box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.1), 0 0 16px rgba(45, 212, 191, 0.75);
+}
+
+.homelab-title {
+  margin: 0;
+  color: var(--control-text);
+  font-size: clamp(2rem, 5vw, 3.75rem);
+  font-weight: 650;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+}
+
+.homelab-subtitle {
+  max-width: 38rem;
+  margin: 0.85rem 0 0;
+  color: var(--control-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.homelab-hero-time {
+  min-width: 12rem;
+  text-align: right;
+}
+
+.homelab-clock {
+  color: var(--control-text);
+  font-size: clamp(2rem, 4vw, 3.15rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 300;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.homelab-date {
+  margin-top: 0.55rem;
+  color: var(--control-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+#information-widgets {
+  margin: 0 2.25rem 0.8rem;
+  padding: 0.6rem 0 0.25rem;
+  border: 0;
+}
+
+#information-widgets .information-widget-search > div {
+  height: 2.9rem;
+  margin: 0;
+}
+
+#information-widgets .information-widget-search input {
+  padding-left: 1rem;
+  padding-right: 4rem;
+  border: 1px solid var(--control-border);
+  border-radius: 14px;
+  background: rgba(9, 17, 31, 0.72);
+  color: var(--control-text);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(16px);
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+#information-widgets .information-widget-search input::placeholder {
+  color: rgba(148, 163, 184, 0.68);
+}
+
+#information-widgets .information-widget-search input:focus {
+  border-color: var(--control-border-active);
+  background: rgba(12, 23, 40, 0.92);
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1), 0 12px 36px rgba(0, 0, 0, 0.2);
+  outline: none;
+}
+
+#information-widgets .information-widget-search button {
+  right: 0.35rem;
+  bottom: 0.35rem;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  background: rgba(45, 212, 191, 0.1);
+  color: var(--control-teal);
+}
+
+#layout-groups,
+#services,
+#bookmarks {
+  margin: 0 1.75rem 0.75rem;
+  align-items: stretch;
+}
+
+#page_wrapper .services-group,
+#page_wrapper .bookmark-group {
+  padding: 0.5rem;
+}
+
+#page_wrapper .services-group > button,
+#page_wrapper .bookmark-group > button {
+  min-height: 2.4rem;
+  margin-bottom: 0.35rem;
+  padding: 0 0.2rem;
+}
+
+#page_wrapper .service-group-name,
+#page_wrapper .bookmark-group-name {
+  color: #b8c7da;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+#page_wrapper .service-group-icon,
+#page_wrapper .bookmark-group-icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  margin-right: 0.65rem;
+  filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.24));
+}
+
+#page_wrapper .service-card {
+  min-height: 4.8rem;
+  margin-bottom: 0.7rem;
+  padding: 0.35rem;
+  overflow: hidden;
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius);
+  background: linear-gradient(145deg, rgba(18, 30, 51, 0.82), rgba(8, 16, 29, 0.7));
+  box-shadow:
+    0 14px 38px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(16px);
+  transform: translateY(0);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+#page_wrapper .service-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 15% 0;
+  height: 1px;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent, var(--control-teal), transparent);
+  transition: opacity 180ms ease;
+}
+
+#page_wrapper .service-card:hover {
+  border-color: var(--control-border-active);
+  background: linear-gradient(145deg, rgba(20, 38, 62, 0.92), rgba(9, 20, 35, 0.8));
+  box-shadow:
+    0 18px 46px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(45, 212, 191, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transform: translateY(-3px);
+}
+
+#page_wrapper .service-card:hover::after {
+  opacity: 0.8;
+}
+
+#page_wrapper .service-icon {
+  width: 3.65rem;
+  margin: 0.2rem;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 12px;
+  background: rgba(5, 11, 22, 0.46);
+}
+
+#page_wrapper .service-icon img,
+#page_wrapper .service-icon svg {
+  width: 2rem;
+  height: 2rem;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.25));
+}
+
+#page_wrapper .service-name {
+  padding: 0.65rem 0.7rem;
+  color: var(--control-text);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+#page_wrapper .service-description {
+  margin-top: 0.22rem;
+  color: var(--control-muted);
+  font-size: 0.7rem;
+  font-weight: 450;
+  letter-spacing: 0.01em;
+}
+
+#page_wrapper .service-card:focus-within,
+#page_wrapper .bookmark > a:focus-visible {
+  border-color: var(--control-teal);
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.18), 0 18px 46px rgba(0, 0, 0, 0.3);
+  outline: none;
+}
+
+#page_wrapper .bookmark > a {
+  overflow: hidden;
+  border: 1px solid var(--control-border);
+  border-radius: 14px;
+  background: var(--control-surface);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+#page_wrapper .bookmark > a:hover {
+  border-color: var(--control-border-active);
+  background: var(--control-surface-strong);
+  transform: translateY(-2px);
+}
+
+#page_wrapper .bookmark-icon {
+  background: rgba(45, 212, 191, 0.08);
+  color: var(--control-teal);
+}
+
+#page_wrapper .bookmark-name {
+  color: var(--control-text);
+}
+
+#page_wrapper .bookmark-description {
+  color: var(--control-muted);
+}
+
+#footer {
+  min-height: 4.5rem;
+  padding: 1rem 2.75rem 1.5rem;
+  opacity: 0.55;
+  transition: opacity 180ms ease;
+}
+
+#footer:hover {
+  opacity: 1;
+}
+
+#revalidate svg {
+  color: var(--control-muted);
+  transition: color 180ms ease, transform 250ms ease;
+}
+
+#revalidate:hover svg {
+  color: var(--control-teal);
+  transform: rotate(45deg);
+}
+
+html.control-room-ready #homelab-hero,
+html.control-room-ready #information-widgets,
+html.control-room-ready .services-group,
+html.control-room-ready .bookmark-group {
+  animation: control-room-enter 520ms both cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html.control-room-ready #information-widgets {
+  animation-delay: 60ms;
+}
+
+html.control-room-ready .services-group:nth-child(2),
+html.control-room-ready .bookmark-group:nth-child(2) {
+  animation-delay: 80ms;
+}
+
+html.control-room-ready .services-group:nth-child(3),
+html.control-room-ready .bookmark-group:nth-child(3) {
+  animation-delay: 130ms;
+}
+
+html.control-room-ready .services-group:nth-child(4),
+html.control-room-ready .bookmark-group:nth-child(4) {
+  animation-delay: 180ms;
+}
+
+@keyframes control-room-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  #homelab-hero {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+
+  .homelab-hero-time {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    text-align: left;
+  }
+}
+
+@media (max-width: 640px) {
+  #inner_wrapper > .container {
+    padding: 0.2rem 0.35rem 0;
+  }
+
+  #homelab-hero {
+    gap: 1.2rem;
+    margin: 1rem 0.75rem 0.4rem;
+    padding: 1.35rem 1.2rem;
+    border-radius: 18px;
+  }
+
+  .homelab-title {
+    font-size: 2.2rem;
+  }
+
+  .homelab-subtitle {
+    font-size: 0.82rem;
+  }
+
+  .homelab-hero-time {
+    display: block;
+  }
+
+  .homelab-clock {
+    font-size: 2.25rem;
+  }
+
+  #information-widgets {
+    margin: 0 0.75rem 0.55rem;
+  }
+
+  #layout-groups,
+  #services,
+  #bookmarks {
+    margin: 0 0.35rem 0.5rem;
+  }
+
+  #page_wrapper .services-group,
+  #page_wrapper .bookmark-group {
+    padding: 0.4rem;
+  }
+
+  #page_wrapper .service-card {
+    min-height: 4.6rem;
+  }
+
+  #footer {
+    padding: 0.75rem 1.25rem 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

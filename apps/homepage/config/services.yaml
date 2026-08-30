@@ -3,3 +3,45 @@
         icon: mdi-cash-multiple
         href: https://budget.apps.bubudog.net
         description: Personal finance
+
+- PVE:
+    - Proxmox VE:
+        icon: proxmox
+        href: https://pve.bubudog.net
+        description: Virtualization management
+
+    - TrueNAS:
+        icon: truenas
+        href: https://nas.bubudog.net
+        description: Storage management
+
+    - Deluge:
+        icon: deluge
+        href: https://deluge.bubudog.net
+        description: Torrent client
+
+    - Arcane:
+        icon: arcane
+        href: https://containers.bubudog.net
+        description: Container management
+
+    - Home Assistant:
+        icon: home-assistant
+        href: https://home.bubudog.net
+        description: Home automation
+
+- Network:
+    - OPNsense:
+        icon: opnsense
+        href: https://fw.bubudog.net
+        description: Firewall and routing
+
+    - UniFi:
+        icon: unifi
+        href: https://unifi.bubudog.net
+        description: Network management
+
+    - Nginx Proxy Manager:
+        icon: nginx-proxy-manager
+        href: https://proxy.bubudog.net
+        description: Reverse proxy management
