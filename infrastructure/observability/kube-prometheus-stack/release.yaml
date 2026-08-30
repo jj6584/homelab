@@ -3,6 +3,7 @@ kind: HelmRelease
 metadata:
   name: kube-prometheus-stack
   namespace: flux-system
+
 spec:
   interval: 30m
 
@@ -13,21 +14,25 @@ spec:
     spec:
       chart: kube-prometheus-stack
       version: "88.6.1"
+
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
         namespace: flux-system
+
       interval: 1h
 
   install:
     createNamespace: false
     crds: CreateReplace
+
     remediation:
       retries: 3
 
   upgrade:
     crds: CreateReplace
     cleanupOnFail: true
+
     remediation:
       retries: 3
 
@@ -47,6 +52,7 @@ spec:
         requests:
           cpu: 100m
           memory: 128Mi
+
         limits:
           memory: 512Mi
 
@@ -63,8 +69,37 @@ spec:
           requests:
             cpu: 200m
             memory: 512Mi
+
           limits:
             memory: 1Gi
+
+      additionalPodMonitors:
+        - name: flux-system
+
+          namespaceSelector:
+            matchNames:
+              - flux-system
+
+          selector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - source-controller
+                  - kustomize-controller
+                  - helm-controller
+                  - notification-controller
+
+          podMetricsEndpoints:
+            - port: http-prom
+              path: /metrics
+              interval: 30s
+
+              relabelings:
+                - sourceLabels:
+                    - __meta_kubernetes_pod_phase
+                  action: keep
+                  regex: Running
 
     alertmanager:
       enabled: true
