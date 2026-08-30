@@ -54,6 +54,15 @@ spec:
 
       defaultDashboardsTimezone: browser
 
+      sidecar:
+        dashboards:
+          enabled: true
+          label: grafana_dashboard
+          labelValue: "1"
+
+        datasources:
+          uid: prometheus
+
       resources:
         requests:
           cpu: 100m
