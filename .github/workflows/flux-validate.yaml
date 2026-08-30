@@ -56,3 +56,10 @@ jobs:
             --path ./infrastructure/storage/nfs \
             --kustomization-file ./clusters/homelab/nfs.yaml \
             --dry-run > /dev/null
+
+      - name: Validate Observability
+        run: |
+          flux build kustomization observability \
+            --path ./infrastructure/observability \
+            --kustomization-file ./clusters/homelab/observability.yaml \
+            --dry-run > /dev/null
