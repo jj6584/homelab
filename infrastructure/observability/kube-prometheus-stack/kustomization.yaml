@@ -5,6 +5,7 @@ resources:
   - repository.yaml
   - release.yaml
   - ingress.yaml
+  - dashboards
 
 configMapGenerator:
   - name: kube-prometheus-stack-flux-values
