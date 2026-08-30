@@ -5,3 +5,16 @@ resources:
   - repository.yaml
   - release.yaml
   - ingress.yaml
+
+configMapGenerator:
+  - name: kube-prometheus-stack-flux-values
+    namespace: flux-system
+
+    files:
+      - values.yaml=values/flux.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+  labels:
+    reconcile.fluxcd.io/watch: Enabled
