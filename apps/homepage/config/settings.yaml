@@ -32,6 +32,11 @@ layout:
     columns: 3
     icon: mdi-apps
 
+  Media:
+    style: row
+    columns: 3
+    icon: mdi-multimedia
+
   Development:
     style: row
     columns: 3

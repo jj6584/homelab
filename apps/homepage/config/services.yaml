@@ -4,6 +4,12 @@
         href: https://budget.apps.bubudog.net
         description: Personal finance
 
+- Media:
+    - Jellyfin:
+        icon: jellyfin
+        href: https://jellyfin.bubudog.net
+        description: Media server
+
 - PVE:
     - Proxmox VE:
         icon: proxmox
