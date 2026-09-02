@@ -3,5 +3,4 @@ kind: Kustomization
 
 resources:
   - namespace.yaml
-  - movies-storage.yaml
-  - torrents-storage.yaml
+  - media-storage.yaml
