@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: PersistentVolume
+
+metadata:
+  name: media-torrents
+
+spec:
+  capacity:
+    storage: 2Ti
+
+  accessModes:
+    - ReadWriteMany
+
+  persistentVolumeReclaimPolicy: Retain
+
+  storageClassName: ""
+
+  mountOptions:
+    - nfsvers=4.1
+
+  nfs:
+    server: 172.16.0.2
+    path: /mnt/main/NAS/torrent_downloads
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+
+metadata:
+  name: media-torrents
+  namespace: media
+
+spec:
+  accessModes:
+    - ReadWriteMany
+
+  storageClassName: ""
+
+  volumeName: media-torrents
+
+  resources:
+    requests:
+      storage: 2Ti
