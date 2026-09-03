@@ -51,7 +51,7 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 6,
+        "w": 4,
         "x": 0,
         "y": 0
       },
@@ -117,8 +117,8 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 6,
-        "x": 6,
+        "w": 4,
+        "x": 4,
         "y": 0
       },
       "id": 2,
@@ -187,8 +187,8 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 6,
-        "x": 12,
+        "w": 4,
+        "x": 8,
         "y": 0
       },
       "id": 3,
@@ -214,14 +214,83 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(kube_pod_container_status_restarts_total{namespace=\"media\",container=~\"$container\"})",
+          "expr": "sum(increase(kube_pod_container_status_restarts_total{namespace=\"media\",container=~\"$container\"}[$__range]))",
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
           "refId": "A"
         }
       ],
-      "title": "Container Restarts",
+      "title": "Restarts (Dashboard Range)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 12,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "sum(count_over_time({namespace=\"media\",container=~\"$container\"} |~ \"(?i)(error|exception|fatal|failed|failure|timeout|forbidden|denied|oom)\" [1h]))",
+          "queryType": "instant",
+          "refId": "A"
+        }
+      ],
+      "title": "Log Errors (1h)",
       "type": "stat"
     },
     {
@@ -253,11 +322,11 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 6,
-        "x": 18,
+        "w": 4,
+        "x": 16,
         "y": 0
       },
-      "id": 4,
+      "id": 5,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -289,6 +358,218 @@
       ],
       "title": "PVC Problems",
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(kube_pod_container_status_last_terminated_reason{namespace=\"media\",container=~\"$container\",reason=\"OOMKilled\"})",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "OOMKilled Containers",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 5
+      },
+      "id": 7,
+      "options": {
+        "displayMode": "gradient",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "100 * sum by (container) (rate(container_cpu_usage_seconds_total{namespace=\"media\",container=~\"$container\",container!=\"\",image!=\"\"}[5m])) / clamp_min(sum by (container) (kube_pod_container_resource_limits{namespace=\"media\",container=~\"$container\",resource=\"cpu\",unit=\"core\"}), 0.001)",
+          "instant": true,
+          "legendFormat": "{{container}}",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "CPU % of Limit",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 5
+      },
+      "id": 8,
+      "options": {
+        "displayMode": "gradient",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "100 * sum by (container) (container_memory_working_set_bytes{namespace=\"media\",container=~\"$container\",container!=\"\",image!=\"\"}) / clamp_min(sum by (container) (kube_pod_container_resource_limits{namespace=\"media\",container=~\"$container\",resource=\"memory\",unit=\"byte\"}), 1)",
+          "instant": true,
+          "legendFormat": "{{container}}",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Memory % of Limit",
+      "type": "bargauge"
     },
     {
       "datasource": {
@@ -338,9 +619,9 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 5
+        "y": 12
       },
-      "id": 5,
+      "id": 9,
       "options": {
         "legend": {
           "calcs": [
@@ -420,9 +701,9 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 5
+        "y": 12
       },
-      "id": 6,
+      "id": 10,
       "options": {
         "legend": {
           "calcs": [
@@ -461,21 +742,35 @@
       },
       "fieldConfig": {
         "defaults": {
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "DOWN"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "HEALTHY"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "max": 1,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "orange",
+                "color": "green",
                 "value": 1
-              },
-              {
-                "color": "red",
-                "value": 5
               }
             ]
           },
@@ -485,11 +780,11 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 12,
+        "w": 24,
         "x": 0,
-        "y": 13
+        "y": 20
       },
-      "id": 7,
+      "id": 11,
       "options": {
         "displayMode": "gradient",
         "maxVizHeight": 300,
@@ -515,82 +810,98 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (container) (kube_pod_container_status_restarts_total{namespace=\"media\",container=~\"$container\"})",
+          "expr": "max by (container) (kube_pod_container_status_ready{namespace=\"media\",container=~\"$container\",condition=\"true\"})",
           "instant": true,
           "legendFormat": "{{container}}",
           "range": false,
           "refId": "A"
         }
       ],
-      "title": "Restarts by Container",
+      "title": "Container Health",
       "type": "bargauge"
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
+        "type": "loki",
+        "uid": "loki"
       },
       "fieldConfig": {
         "defaults": {
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
-              }
-            ]
+          "color": {
+            "mode": "palette-classic"
           },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
           "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 13
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 27
       },
-      "id": 8,
+      "id": 12,
       "options": {
-        "displayMode": "gradient",
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
+        "legend": {
           "calcs": [
-            "lastNotNull"
+            "lastNotNull",
+            "max"
           ],
-          "fields": "",
-          "values": false
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
       },
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
+            "type": "loki",
+            "uid": "loki"
           },
+          "direction": "backward",
           "editorMode": "code",
-          "expr": "kube_deployment_status_replicas_unavailable{namespace=\"media\"}",
-          "instant": true,
-          "legendFormat": "{{deployment}}",
-          "range": false,
+          "expr": "sum by (container) (rate({namespace=\"media\",container=~\"$container\"}[5m]))",
+          "legendFormat": "{{container}}",
+          "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Unavailable Replicas by Deployment",
-      "type": "bargauge"
+      "title": "Log Rate by Container",
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -601,9 +912,9 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 35
       },
-      "id": 9,
+      "id": 13,
       "options": {
         "dedupStrategy": "none",
         "enableLogDetails": true,
@@ -622,7 +933,7 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "{namespace=\"media\",container=~\"$container\"}",
+          "expr": "{namespace=\"media\",container=~\"$container\"} |~ \"(?i)$log_search\"",
           "queryType": "range",
           "refId": "A"
         }
@@ -639,9 +950,9 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 47
       },
-      "id": 10,
+      "id": 14,
       "options": {
         "dedupStrategy": "none",
         "enableLogDetails": true,
@@ -660,7 +971,7 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "{namespace=\"media\",container=~\"$container\"} |~ \"(?i)(error|exception|fatal|failed|timeout|forbidden|denied)\"",
+          "expr": "{namespace=\"media\",container=~\"$container\"} |~ \"(?i)(error|exception|fatal|failed|failure|timeout|forbidden|denied|oom)\"",
           "queryType": "range",
           "refId": "A"
         }
@@ -706,6 +1017,20 @@
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": ".*",
+          "value": ".*"
+        },
+        "hide": 0,
+        "label": "Log Regex",
+        "name": "log_search",
+        "options": [],
+        "query": ".*",
+        "skipUrlSync": false,
+        "type": "textbox"
       }
     ]
   },
@@ -717,6 +1042,6 @@
   "timezone": "browser",
   "title": "Media / ARR Stack",
   "uid": "media-arr-stack",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
