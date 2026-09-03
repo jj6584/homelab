@@ -99,6 +99,9 @@ spec:
     resultsCache:
       enabled: false
 
+    test:
+      enabled: false
+
     lokiCanary:
       enabled: false
 
