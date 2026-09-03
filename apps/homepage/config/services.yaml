@@ -9,6 +9,31 @@
         icon: jellyfin
         href: https://jellyfin.bubudog.net
         description: Media server
+        
+    - Seerr:
+        icon: mdi-movie-search
+        href: https://seerr.apps.bubudog.net
+        description: Media requests
+
+    - Radarr:
+        icon: radarr
+        href: https://radarr.apps.bubudog.net
+        description: Movie automation
+
+    - Sonarr:
+        icon: sonarr
+        href: https://sonarr.apps.bubudog.net
+        description: TV and anime automation
+
+    - Prowlarr:
+        icon: prowlarr
+        href: https://prowlarr.apps.bubudog.net
+        description: Indexer management
+
+    - Bazarr:
+        icon: bazarr
+        href: https://bazarr.apps.bubudog.net
+        description: Subtitle management
 
 - PVE:
     - Proxmox VE:
