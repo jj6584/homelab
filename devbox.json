@@ -1,0 +1,36 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/main/.schema/devbox.schema.json",
+  "packages": [
+    "kubectl@1.36.3",
+    "talosctl@1.13.8",
+    "fluxcd@2.9.4",
+    "kubernetes-helm@4.2.4",
+    "kustomize@5.8.1",
+    "sops@3.13.3",
+    "age@1.3.1",
+    "jq@latest",
+    "yq-go@latest",
+    "k9s@latest"
+  ],
+  "shell": {
+    "init_hook": [
+      "echo '🏠 Homelab Devbox environment loaded'"
+    ],
+    "scripts": {
+      "test": [
+        "echo \"Error: no test specified\" && exit 1"
+      ],
+      "whereami": [
+        "echo \"KUBECONFIG=$KUBECONFIG\"",
+        "echo \"TALOSCONFIG=$TALOSCONFIG\"",
+        "echo \"Context=$(kubectl config current-context)\"",
+        "kubectl cluster-info",
+        "kubectl get nodes"
+      ],
+      "reconcile": [
+        "flux reconcile source git flux-system",
+        "flux reconcile kustomization flux-system --with-source"
+      ]
+    }
+  }
+}
