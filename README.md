@@ -517,6 +517,12 @@ This trade-off is intentional: transparency is useful for learning and portfolio
 
 ---
 
+## Observability
+
+The cluster collects container logs across all namespaces with Alloy and Loki, and workload metrics with Prometheus. Grafana provisions a **Kubernetes / All Workloads** dashboard with dynamic filters for current and future apps. See the [observability guide](infrastructure/observability/README.md) for coverage, application metrics setup, and rollout checks.
+
+---
+
 ## What I Am Learning
 
 This project is a practical environment for developing deeper understanding of:

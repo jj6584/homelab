@@ -38,6 +38,10 @@ spec:
   values:
     deploymentMode: Monolithic
 
+    monitoring:
+      serviceMonitor:
+        enabled: true
+
     loki:
       auth_enabled: false
 
