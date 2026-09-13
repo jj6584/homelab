@@ -39,6 +39,17 @@ spec:
     controller:
       type: daemonset
 
+      # Collect from every node, including control-plane and future tainted nodes.
+      tolerations:
+        - operator: Exists
+
+    rbac:
+      create: true
+      namespaces: []
+
+    serviceMonitor:
+      enabled: true
+
     alloy:
       enableReporting: false
 
@@ -58,21 +69,19 @@ spec:
             format = "logfmt"
           }
 
-          discovery.kubernetes "media_pods" {
+          discovery.kubernetes "pods" {
             role = "pod"
 
-            namespaces {
-              names = ["media"]
-            }
-
+            // The Helm chart sets HOSTNAME to spec.nodeName. Each agent tails
+            // only its own node so streams are not duplicated across agents.
             selectors {
               role  = "pod"
               field = "spec.nodeName=" + sys.env("HOSTNAME")
             }
           }
 
-          discovery.relabel "media_pods" {
-            targets = discovery.kubernetes.media_pods.targets
+          discovery.relabel "pods" {
+            targets = discovery.kubernetes.pods.targets
 
             rule {
               source_labels = ["__meta_kubernetes_namespace"]
@@ -90,7 +99,26 @@ spec:
             }
 
             rule {
+              source_labels = ["__meta_kubernetes_pod_node_name"]
+              target_label  = "node"
+            }
+
+            // Prefer the standard app label, then the legacy app label, then
+            // the container name so unlabeled workloads remain identifiable.
+            rule {
+              source_labels = ["__meta_kubernetes_pod_container_name"]
+              target_label  = "app"
+            }
+
+            rule {
+              source_labels = ["__meta_kubernetes_pod_label_app"]
+              regex         = "(.+)"
+              target_label  = "app"
+            }
+
+            rule {
               source_labels = ["__meta_kubernetes_pod_label_app_kubernetes_io_name"]
+              regex         = "(.+)"
               target_label  = "app"
             }
 
@@ -100,8 +128,8 @@ spec:
             }
           }
 
-          loki.source.kubernetes "media_pods" {
-            targets    = discovery.relabel.media_pods.output
+          loki.source.kubernetes "pods" {
+            targets    = discovery.relabel.pods.output
             forward_to = [loki.write.loki.receiver]
           }
 
