@@ -7,5 +7,6 @@ resources:
   - metallb.yaml
   - traefik.yaml
   - nfs.yaml
+  - metrics-server.yaml
   - observability.yaml
   - apps.yaml
