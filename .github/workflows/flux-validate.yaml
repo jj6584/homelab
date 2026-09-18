@@ -63,3 +63,17 @@ jobs:
             --path ./infrastructure/observability \
             --kustomization-file ./clusters/homelab/observability.yaml \
             --dry-run > /dev/null
+      
+      - name: Validate Kubelet Serving Cert Approver
+        run: |
+          flux build kustomization kubelet-serving-cert-approver \
+            --path ./infrastructure/kubelet-serving-cert-approver \
+            --kustomization-file ./clusters/homelab/kubelet-serving-cert-approver.yaml \
+            --dry-run > /dev/null
+
+      - name: Validate Metrics Server
+        run: |
+          flux build kustomization metrics-server \
+            --path ./infrastructure/metrics-server \
+            --kustomization-file ./clusters/homelab/metrics-server.yaml \
+            --dry-run > /dev/null
